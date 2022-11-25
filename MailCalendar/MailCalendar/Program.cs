@@ -1,5 +1,4 @@
 ﻿using MailCalendar;
-using System.ComponentModel.DataAnnotations;
 
 var eventsList = new List<Event>()
 {
