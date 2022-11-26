@@ -23,17 +23,28 @@ namespace MailCalendar
 
         public bool IsAttending(Guid id)
         {
+            if (!Attendance.ContainsKey(id))
+            {
+                Console.WriteLine($"{Email} ne sudjeluje u ovom eventu!");
+                return false;
+            }
             return Attendance[id];
         }
 
         public void SetAttendanceToFalse(Guid id)
         {
-            Attendance[id] = false;
+            if (!Attendance.ContainsKey(id))
+                Console.WriteLine($"{Email} ne sudjeluje u ovom eventu!");
+            else
+                Attendance[id] = false;
         }
 
         public void RemoveEvent(Guid id)
         {
-            Attendance.Remove(id);
+            if (!Attendance.ContainsKey(id))
+                Console.WriteLine($"{Email} vec ne sudjeluje u ovom eventu!");
+            else
+                Attendance.Remove(id);
         }
 
         public bool IsOverlaping(DateTime startDate, DateTime endDate, List<Event> eventsList)
@@ -53,7 +64,10 @@ namespace MailCalendar
 
         public void AddEvent(Guid id)
         {
-             Attendance.Add(id, true);
+            if (Attendance.ContainsKey(id))
+                Console.WriteLine($"{Email} vec sudjeluje u ovom eventu!");
+            else
+                Attendance.Add(id, true);
         }
     }
 }

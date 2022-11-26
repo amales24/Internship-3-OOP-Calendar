@@ -38,7 +38,10 @@ namespace MailCalendar
 
         public void RemoveEmails(string mail)
         {
-            Emails.Remove(mail);
+            if (!Emails.Contains(mail))
+                Console.WriteLine($"{mail} se ne nalazi na popisu sudionika ovog dogadaja!");
+            else
+                Emails.Remove(mail);
         }
     }
 }

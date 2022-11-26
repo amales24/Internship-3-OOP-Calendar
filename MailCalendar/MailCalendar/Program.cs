@@ -256,7 +256,7 @@ List<string> InputMails(List<string> eventMails)
 
     while (true)
     {
-        if (myInput == "")
+        if (myInput == "" || myInput == ",")
         {
             Console.WriteLine("\nNiste nikoga unijeli, pokusajte ponovno:");
             myInput = Console.ReadLine().Trim();
@@ -470,7 +470,7 @@ void CreateEvent()
 
     while (true)
     {
-        if (myInput == "")
+        if (myInput == "" || myInput == ",")
         {
             Console.WriteLine("\nNiste nikoga unijeli, pokusajte ponovno:");
             myInput = Console.ReadLine().Trim();
