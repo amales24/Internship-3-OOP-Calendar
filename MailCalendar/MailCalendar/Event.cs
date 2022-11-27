@@ -28,7 +28,7 @@ namespace MailCalendar
 
         public Status EventStatus()
         {
-            if (StartDate < DateTime.Now && DateTime.Now < EndDate)
+            if (StartDate <= DateTime.Now && DateTime.Now < EndDate)
                 return Status.Aktivni;
             else if (StartDate > DateTime.Now)
                 return Status.Buduci;
