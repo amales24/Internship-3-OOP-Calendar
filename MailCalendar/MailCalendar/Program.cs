@@ -187,7 +187,7 @@ void ActiveEvents()
 
     if (!flag)
     {
-        Console.WriteLine("Nema ih!"); 
+        Console.WriteLine("Nema ih!");
         ReturnToStartMenu();
     }
     else
@@ -234,6 +234,7 @@ void AbsenceRecord()
             }
         }
     }
+
     ReturnToStartMenu();
 }
 
@@ -259,6 +260,7 @@ Event InputEventId(Status myEventStatus)
         else
             break;
     }
+
     return myEvent;
 }
 
@@ -282,8 +284,7 @@ List<string> InputMail()
             break;
     }
 
-    var myMail = myInput.Split(",");
-    return myMail.ToList<string>();
+    return myInput.Split(",").ToList<string>();
 }
 
 List<string> GetExistentMail(List<string> eventMail, List<string> myMail)
@@ -309,6 +310,7 @@ bool ConfirmDialogue()
 {
     Console.WriteLine("\nY - Zelim \nN - Ne zelim");
     var myChoice = Input(new List<string>() { "Y", "N" });
+
     return myChoice == "Y";
 }
 
@@ -381,6 +383,7 @@ void DeleteEvent()
         }
         Console.WriteLine("\nRadnja uspjesno izvrsena! Izbrisan je dogadaj i podatci o prisutnosti sudionika.");
     }
+
     ReturnToStartMenu();
 }
 
@@ -419,6 +422,7 @@ void RemovePeople()
                 Console.WriteLine("\nRadnja zaustavljena!");
         }
     }
+
     ReturnToStartMenu();
 }
 
@@ -551,6 +555,7 @@ string InputName()
         Console.WriteLine("\nNiste nista unijeli, pokusajte ponovno:");
         myName = Console.ReadLine().Trim();
     }
+
     return myName;
 }
 
@@ -576,5 +581,6 @@ DateTime InputDate(DateTime lowerLimit)
             Console.WriteLine("Pogresan unos, pokusajte ponovno:");
         }
     }
+
     return myDate;
 }
