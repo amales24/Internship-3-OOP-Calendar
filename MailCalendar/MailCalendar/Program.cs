@@ -122,12 +122,19 @@ string Input(List<string> myOptions)
 
 void ReturnToStartMenu()
 {
-    Console.WriteLine("\nPritisnite P za povratak na glavni menu ili bilo koju drugu tipku za izlazak iz aplikacije:");
-    if (Console.ReadLine().Trim().ToUpper() != "P")
+    Console.WriteLine("\nP - Povratak na glavni menu \n0 - Izlazak iz aplikacije");
+
+    var myChoice = Input(new List<string>() { "P", "0" });
+
+    switch(myChoice)
     {
-        Console.Clear();
-        Console.WriteLine("Aplikacija zatvorena!");
-        Environment.Exit(0);
+        case "0":
+            Console.Clear();
+            Console.WriteLine("Aplikacija zatvorena!");
+            Environment.Exit(0);
+            break;
+        case "P":
+            break;
     }
 }
 
@@ -187,7 +194,7 @@ void ActiveEvents()
     {
         Console.WriteLine("SUBMENU \n1 - Zabiljezi neprisutnosti \nP - Povratak na glavni menu");
 
-        myChoice = Input(new List<string>() { "1", "P" });
+        var myChoice = Input(new List<string>() { "1", "P" });
 
         if (myChoice == "1")
             AbsenceRecord();
@@ -335,7 +342,7 @@ void FutureEvents()
     {
         Console.WriteLine("SUBMENU \n1 - Izbrisi event \n2 - Ukloni osobe s eventa \nP - Povratak na glavni menu");
 
-        myChoice = Input(new List<string>() { "1", "2", "P" });
+        var myChoice = Input(new List<string>() { "1", "2", "P" });
 
         switch (myChoice)
         {
