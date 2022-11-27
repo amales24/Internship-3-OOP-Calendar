@@ -24,6 +24,7 @@ namespace MailCalendar
         public List<string> GetEmails()
         {
             return Emails.AsReadOnly().ToList<string>();
+        }
 
         public Status EventStatus()
         {
