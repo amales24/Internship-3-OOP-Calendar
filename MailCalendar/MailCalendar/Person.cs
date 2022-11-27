@@ -28,6 +28,7 @@ namespace MailCalendar
                 Console.WriteLine($"{Email} ne sudjeluje u ovom eventu!");
                 return false;
             }
+
             return Attendance[id];
         }
 
@@ -59,6 +60,7 @@ namespace MailCalendar
                     startDate > myEvent.StartDate && startDate < myEvent.EndDate)
                     return true; 
             }
+
             return false;
         }
 
