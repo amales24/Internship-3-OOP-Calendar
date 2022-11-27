@@ -199,27 +199,32 @@ void AbsenceRecord()
     Console.WriteLine("\nUnesite Id nekog aktivnog dogadaja na kojem zelite biljeziti neprisutnost:");
     var myEvent = InputEventId(Status.Aktivni);
 
-    Console.WriteLine("\nUnesite mailove osoba kojima zelite zabiljeziti neprisutnost, odvojite ih zarezom (bez razmaka):");
-    var myMails = InputMails(myEvent.GetEmails());
-
-    if (myMails.Count == 0)
-        Console.WriteLine("\nNiste unijeli nijednog sudionika ovog dogadaja!");
+    if (myEvent.GetEmails().Count == 0)
+        Console.WriteLine("Nema sudionika na ovom dogadaju!");
     else
     {
-        Console.WriteLine($"\nJeste li sigurni da zelite zabiljeziti neprisutnost sljedecim osobama: {string.Join(", ",myMails)}?");
-        if (ConfirmDialogue())
-        {
-            Person myPerson;
-            foreach (var mail in myMails)
-            {
-                myPerson = peopleList.Find(p => p.Email == mail);
-                myPerson.SetAttendanceToFalse(myEvent.Id);
-            }
-            Console.WriteLine("\nRadnja uspjesno izvrsena!");
-        }
+        Console.WriteLine("\nUnesite mailove osoba kojima zelite zabiljeziti neprisutnost, odvojite ih zarezom (bez razmaka):");
+        var myMail = GetExistentMail(myEvent.GetEmails(), InputMail());
+
+        if (myMail.Count == 0)
+            Console.WriteLine("\nNiste unijeli nijednog sudionika ovog dogadaja!");
         else
         {
-            Console.WriteLine("\nRadnja zaustavljena!");
+            Console.WriteLine($"\nJeste li sigurni da zelite zabiljeziti neprisutnost sljedecim osobama: {string.Join(", ", myMail)}?");
+            if (ConfirmDialogue())
+            {
+                Person myPerson;
+                foreach (var mail in myMail)
+                {
+                    myPerson = peopleList.Find(p => p.Email == mail);
+                    myPerson.SetAttendanceToFalse(myEvent.Id);
+                }
+                Console.WriteLine("\nRadnja uspjesno izvrsena!");
+            }
+            else
+            {
+                Console.WriteLine("\nRadnja zaustavljena!");
+            }
         }
     }
     ReturnToStartMenu();
@@ -250,7 +255,7 @@ Event InputEventId(Status myEventStatus)
     return myEvent;
 }
 
-List<string> InputMails(List<string> eventMails)
+List<string> InputMail()
 {
     var myInput = Console.ReadLine().Trim();
 
@@ -270,22 +275,27 @@ List<string> InputMails(List<string> eventMails)
             break;
     }
 
-    var myMails = myInput.Split(",");
-    var existingMails = new List<string>() { };
-    var nonExistentMails = new List<string>() { };
+    var myMail = myInput.Split(",");
+    return myMail.ToList<string>();
+}
 
-    foreach (var mail in myMails ) 
+List<string> GetExistentMail(List<string> eventMail, List<string> myMail)
+{ 
+    var existingMail = new List<string>() { };
+    var nonExistentMail = new List<string>() { };
+
+    foreach (var mail in myMail ) 
     {
-        if (eventMails.Contains(mail))
-            existingMails.Add(mail);
+        if (eventMail.Contains(mail))
+            existingMail.Add(mail);
         else
-            nonExistentMails.Add(mail);
+            nonExistentMail.Add(mail);
     }
     
-    if (nonExistentMails.Count > 0)
-        Console.WriteLine($"\nOsobe s mailom: {string.Join(", ", nonExistentMails)} ne nalaze se na popisu!");
+    if (nonExistentMail.Count > 0)
+        Console.WriteLine($"\nOsobe s mailom: {string.Join(", ", nonExistentMail)} ne nalaze se na popisu!");
 
-    return existingMails;
+    return existingMail;
 }
 
 bool ConfirmDialogue()
@@ -372,30 +382,35 @@ void RemovePeople()
     Console.WriteLine("\nUnesite Id nekog nadolazeceg dogadaja kojem zelite ukloniti sudionike:");
     var myEvent = InputEventId(Status.Buduci);
 
-    Console.WriteLine("\nUnesite mailove osoba koje zelite ukloniti s eventa:");
-    var myMails = InputMails(myEvent.GetEmails());
-
-    if (myMails.Count == 0)
-        Console.WriteLine("\nNiste unijeli nijednog sudionika ovog dogadaja!");
+    if (myEvent.GetEmails().Count == 0)
+        Console.WriteLine("Nema sudionika na ovom dogadaju!");
     else
     {
-        Console.WriteLine($"\nJeste li sigurni da zelite ukloniti sljedece osobe: {string.Join(", ", myMails)}?");
+        Console.WriteLine("\nUnesite mailove osoba koje zelite ukloniti s eventa:");
+        var myMail = GetExistentMail(myEvent.GetEmails(), InputMail());
 
-        if (ConfirmDialogue())
-        {
-            Person myPerson;
-
-            foreach (var mail in myMails)
-            {
-                myEvent.RemoveEmails(mail);
-
-                myPerson = peopleList.Find(p => p.Email == mail);
-                myPerson.RemoveEvent(myEvent.Id);
-            }
-            Console.WriteLine("\nRadnja uspjesno izvrsena!");
-        }
+        if (myMail.Count == 0)
+            Console.WriteLine("\nNiste unijeli nijednog sudionika ovog dogadaja!");
         else
-            Console.WriteLine("\nRadnja zaustavljena!");
+        {
+            Console.WriteLine($"\nJeste li sigurni da zelite ukloniti sljedece osobe: {string.Join(", ", myMail)}?");
+
+            if (ConfirmDialogue())
+            {
+                Person myPerson;
+
+                foreach (var mail in myMail)
+                {
+                    myEvent.RemoveEmails(mail);
+
+                    myPerson = peopleList.Find(p => p.Email == mail);
+                    myPerson.RemoveEvent(myEvent.Id);
+                }
+                Console.WriteLine("\nRadnja uspjesno izvrsena!");
+            }
+            else
+                Console.WriteLine("\nRadnja zaustavljena!");
+        }
     }
     ReturnToStartMenu();
 }
@@ -466,25 +481,7 @@ void CreateEvent()
     var myEndDate = InputDate(myStartDate);
 
     Console.WriteLine("\nUnesite mailove sudionika, razdvojite ih zarezom (bez razmaka):");
-    var myInput = Console.ReadLine().Trim();
-
-    while (true)
-    {
-        if (myInput == "" || myInput == ",")
-        {
-            Console.WriteLine("\nNiste nikoga unijeli, pokusajte ponovno:");
-            myInput = Console.ReadLine().Trim();
-        }
-        else if (myInput.Contains(" ") || myInput.Contains(",,"))
-        {
-            Console.WriteLine("\nPogresan unos, mailovi ne smiju sadrzavati razmake ni zareze, pokusajte ponovno:");
-            myInput = Console.ReadLine().Trim();
-        }
-        else
-            break;
-    }
-
-    var myMails = myInput.Split(",");
+    var myMail = InputMail();
 
     var myPeople = new List<Person>() { };
     var nonExistent = new List<string>() { };
@@ -493,7 +490,7 @@ void CreateEvent()
 
     Person myPerson;
 
-    foreach (var mail in myMails)
+    foreach (var mail in myMail)
     {
         myPerson = peopleList.Find(p => p.Email == mail);
 
