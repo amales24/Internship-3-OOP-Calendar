@@ -23,8 +23,7 @@ namespace MailCalendar
 
         public List<string> GetEmails()
         {
-            return Emails.AsReadOnly().ToList<string>(); // this prevents adding or removing elements outside the class
-        }
+            return Emails.AsReadOnly().ToList<string>();
 
         public Status EventStatus()
         {

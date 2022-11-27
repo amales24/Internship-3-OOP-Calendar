@@ -57,7 +57,7 @@ namespace MailCalendar
 
                 if (startDate <= myEvent.StartDate && endDate > myEvent.StartDate ||
                     startDate > myEvent.StartDate && startDate < myEvent.EndDate)
-                    return true; // it is enough to find one event that overlaps with the new one
+                    return true; 
             }
             return false;
         }

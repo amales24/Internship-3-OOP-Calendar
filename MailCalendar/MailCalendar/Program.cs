@@ -142,7 +142,7 @@ do
         case "0":
             Console.Clear();
             Console.WriteLine("Aplikacija zatvorena!");
-            Environment.Exit(0); // breaks the do-while loop
+            Environment.Exit(0); 
             break;
         case "1":
             ActiveEvents();
@@ -163,7 +163,7 @@ void ActiveEvents()
 {
     Console.WriteLine("Svi trenutno aktivni eventi:\n");
     double endsIn;
-    bool flag = false; // remains false if there are no active events
+    bool flag = false; 
 
     foreach (var e in eventsList)
     {
@@ -180,7 +180,7 @@ void ActiveEvents()
 
     if (!flag)
     {
-        Console.WriteLine("Nema ih!"); // no need for a submenu if there are no events in this category
+        Console.WriteLine("Nema ih!"); 
         ReturnToStartMenu();
     }
     else
@@ -237,7 +237,7 @@ Event InputEventId(Status myEventStatus)
 
     while (true)
     {
-        myEvent = eventsList.Find(e => e.Id.ToString() == myEventId); // finds the first (in this case the only or none) event with the specified id
+        myEvent = eventsList.Find(e => e.Id.ToString() == myEventId);
 
         if (myEvent == null)
         {
@@ -509,7 +509,7 @@ void CreateEvent()
 
     Console.WriteLine($"\nJeste li sigurni da zelite dodati sljedeci dogadaj: \n" +
         $"Naziv: {myEventName} \nLokacija: {myLocationName} \nTrajanje: {myStartDate} - {myEndDate} \n" +
-        $"Popis sudionika: {string.Join(", ",available)} ?");
+        $"Popis sudionika: {(available.Count > 0 ? string.Join(", ",available) : "Nema ih")} ?");
 
     if (!ConfirmDialogue())
         Console.WriteLine("\nRadnja zaustavljena!");
@@ -531,6 +531,7 @@ void CreateEvent()
         }
         Console.WriteLine("\nRadnja uspjesno izvrsena!");
     }
+
     ReturnToStartMenu();
 }
 
