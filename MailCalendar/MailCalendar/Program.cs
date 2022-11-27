@@ -174,7 +174,7 @@ void ActiveEvents()
 
             Console.WriteLine($"> Id: {e.Id} \n" +
                               $"> Naziv: {e.Name} - Lokacija: {e.Location} - Ends in: {endsIn} hours \n" +
-                              $"> Popis sudionika: {string.Join(", ", e.GetEmails())} \n"); 
+                              $"> Popis sudionika: {(e.GetEmails().Count > 0 ? string.Join(", ", e.GetEmails()) : "Nema ih")} \n"); 
         }
     }
 
@@ -200,7 +200,7 @@ void AbsenceRecord()
     var myEvent = InputEventId(Status.Aktivni);
 
     if (myEvent.GetEmails().Count == 0)
-        Console.WriteLine("Nema sudionika na ovom dogadaju!");
+        Console.WriteLine("\nNema sudionika na ovom dogadaju!");
     else
     {
         Console.WriteLine("\nUnesite mailove osoba kojima zelite zabiljeziti neprisutnost, odvojite ih zarezom (bez razmaka):");
@@ -322,7 +322,7 @@ void FutureEvents()
 
             Console.WriteLine($"> Id: {e.Id} \n" +
                               $"> Naziv: {e.Name} - Lokacija: {e.Location} - Pocinje za {startsIn} dana - Trajanje : {lastsFor} sati\n" +
-                              $"> Popis sudionika: {string.Join(", ", e.GetEmails())} \n");
+                              $"> Popis sudionika: {(e.GetEmails().Count > 0 ? string.Join(", ", e.GetEmails()) : "Nema ih")} \n");
         }
     }
 
@@ -383,7 +383,7 @@ void RemovePeople()
     var myEvent = InputEventId(Status.Buduci);
 
     if (myEvent.GetEmails().Count == 0)
-        Console.WriteLine("Nema sudionika na ovom dogadaju!");
+        Console.WriteLine("\nNema sudionika na ovom dogadaju!");
     else
     {
         Console.WriteLine("\nUnesite mailove osoba koje zelite ukloniti s eventa:");
@@ -422,9 +422,7 @@ void PastEvents()
     int endedDaysAgo;
     double lastsFor;
     Person myPerson;
-    string absent, attending;
-    var mailsOfAttendingParticipants = new List<string>() { };
-    var mailsOfAbsentParticipants = new List<string>() { };
+    List<string> mailsOfAttendingParticipants, mailsOfAbsentParticipants;
     bool flag = false;
 
     foreach (var e in eventsList)
@@ -435,6 +433,9 @@ void PastEvents()
             endedDaysAgo = (DateTime.Now - e.EndDate).Days;
             lastsFor = Math.Round((e.EndDate - e.StartDate).TotalHours, 1);
 
+            mailsOfAttendingParticipants = new List<string>() { };
+            mailsOfAbsentParticipants = new List<string>() { };
+
             foreach (var mail in e.GetEmails())
             {
                 myPerson = peopleList.Find(p => p.Email == mail);
@@ -444,20 +445,12 @@ void PastEvents()
                     mailsOfAbsentParticipants.Add(mail);
             }
 
-            if (mailsOfAttendingParticipants.Count == 0)
-                attending = "Nema ih";
-            else
-                attending = string.Join(", ", mailsOfAttendingParticipants);
-
-            if (mailsOfAbsentParticipants.Count == 0)
-                absent = "Nema ih";
-            else
-                absent = string.Join(", ", mailsOfAbsentParticipants);
-
             Console.WriteLine($"> Id: {e.Id} \n" +
                               $"> Naziv: {e.Name} - Lokacija: {e.Location} - Zavrsilo prije {endedDaysAgo} dana - Trajanje : {lastsFor} sati\n" +
-                              $"> Popis prisutnih sudionika: {attending} \n" +
-                              $"> Popis ne prisutnih sudionika: {absent}");
+                              $"> Popis prisutnih sudionika: " +
+                              $"{(mailsOfAttendingParticipants.Count > 0 ? string.Join(", ", mailsOfAttendingParticipants) : "Nema ih")} \n" +
+                              $"> Popis ne prisutnih sudionika: " +
+                              $"{(mailsOfAbsentParticipants.Count > 0 ? string.Join(", ", mailsOfAbsentParticipants) : "Nema ih")} \n");
         }
     }
     if (!flag)
