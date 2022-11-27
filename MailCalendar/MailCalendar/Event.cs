@@ -43,5 +43,12 @@ namespace MailCalendar
             else
                 Emails.Remove(mail);
         }
+
+        public bool IsThisAParticipant(string mail)
+        {
+            if (Emails.Contains(mail))
+                return true;
+            return false;
+        }
     }
 }

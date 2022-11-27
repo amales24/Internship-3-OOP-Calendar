@@ -211,7 +211,7 @@ void AbsenceRecord()
     else
     {
         Console.WriteLine("\nUnesite mailove osoba kojima zelite zabiljeziti neprisutnost, odvojite ih zarezom (bez razmaka):");
-        var myMail = GetExistentMail(myEvent.GetEmails(), InputMail());
+        var myMail = GetExistentMail(myEvent, InputMail());
 
         if (myMail.Count == 0)
             Console.WriteLine("\nNiste unijeli nijednog sudionika ovog dogadaja!");
@@ -280,6 +280,11 @@ List<string> InputMail()
             Console.WriteLine("\nPogresan unos, mailovi ne smiju sadrzavati razmake ni zareze, pokusajte ponovno:");
             myInput = Console.ReadLine().Trim();
         }
+        else if (myInput[0] == ',' || myInput[myInput.Length - 1] == ',')
+        {
+            Console.WriteLine("\nNe mozete unos zapoceti niti zavrsiti zarezom, pokusajte ponovno:");
+            myInput = Console.ReadLine().Trim();
+        }
         else
             break;
     }
@@ -287,14 +292,14 @@ List<string> InputMail()
     return myInput.Split(",").ToList<string>();
 }
 
-List<string> GetExistentMail(List<string> eventMail, List<string> myMail)
+List<string> GetExistentMail(Event myEvent, List<string> myMail)
 { 
     var existingMail = new List<string>() { };
     var nonExistentMail = new List<string>() { };
 
     foreach (var mail in myMail ) 
     {
-        if (eventMail.Contains(mail))
+        if (myEvent.IsThisAParticipant(mail))
             existingMail.Add(mail);
         else
             nonExistentMail.Add(mail);
@@ -397,7 +402,7 @@ void RemovePeople()
     else
     {
         Console.WriteLine("\nUnesite mailove osoba koje zelite ukloniti s eventa:");
-        var myMail = GetExistentMail(myEvent.GetEmails(), InputMail());
+        var myMail = GetExistentMail(myEvent, InputMail());
 
         if (myMail.Count == 0)
             Console.WriteLine("\nNiste unijeli nijednog sudionika ovog dogadaja!");
