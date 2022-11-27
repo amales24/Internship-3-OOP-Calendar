@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace MailCalendar
 {
-    internal class Event
+    public class Event
     {
         public Guid Id { get; }
         public string Name { get; set; }
         public string Location { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        private List<string> Emails { get; set; }
+        private List<string> Emails { get; }
 
         public Event(List<string> emails) 
         {

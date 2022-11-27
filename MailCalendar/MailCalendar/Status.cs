@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MailCalendar
 {
-    enum Status
+    public enum Status
     {
         Aktivni,
         Prosli,
