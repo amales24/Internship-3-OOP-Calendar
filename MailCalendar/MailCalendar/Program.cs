@@ -285,6 +285,11 @@ List<string> InputMail()
             Console.WriteLine("\nNe mozete unos zapoceti niti zavrsiti zarezom, pokusajte ponovno:");
             myInput = Console.ReadLine().Trim();
         }
+        else if (myInput.Split(",").Distinct().Count() != myInput.Split(",").Count())
+        {
+            Console.WriteLine("\nNe mozete vise puta unijeti isti mail, pokusajte ponovno: ");
+            myInput = Console.ReadLine().Trim();
+        }
         else
             break;
     }
